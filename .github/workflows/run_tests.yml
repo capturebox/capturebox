@@ -1,0 +1,26 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+  push:
+    branches:
+      - master
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ✈️
+        uses: actions/checkout@v2
+
+      - name: Prepare 🔧
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run tests 🚀
+        run: php artisan test
